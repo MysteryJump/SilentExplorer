@@ -11,9 +11,18 @@ using System.Reactive;
 
 namespace SilentExplorer.Windows.ViewModel
 {
-    public class ThreadListViewModel : ReactiveObject
+    public class ThreadListViewModel : ViewModelBase
     {
         private ObservableCollection<Thread> hasThreads;
+
+        public ThreadListViewModel()
+        {
+            MessageBus.Current.Listen<string>()
+                .Subscribe(async x => 
+                    {
+                        await Initializer(x);
+                    });
+        }
 
         public ObservableCollection<Thread> Threads
         {
@@ -41,7 +50,13 @@ namespace SilentExplorer.Windows.ViewModel
         private async Task Initializer(object url)
         {
             var uri = url.ToString();
-            var threads = 
+
+            var bbs = Bbs.Load(uri);
+            var threads = await bbs.GetThreadList();
+            
+            threads.ForEach(Threads.Add);            
         }
+
+
     }
 }

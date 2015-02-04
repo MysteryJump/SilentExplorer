@@ -37,6 +37,10 @@ namespace SilentExplorer.Library.SilentExplorerCore.Data
 
         public bool IsReaded { get; set; }
 
+        public async Task<List<Response>> GetThreadReses()
+        {
+            return new List<Response>();
+        }
 
     }
 }
